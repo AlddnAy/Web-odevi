@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim Formu</title>
+    <link href="css/iletişim.css" rel="stylesheet" type="text/css">
+    <link href="css/anasayfa.css" rel="stylesheet" type="text/css">
+    <script>
+        function submitForm() {
+            // Form verilerini al
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var subject = document.getElementById("subject").value;
+            var message = document.getElementById("message").value;
+
+            // Form verilerini kontrol et (isteğe bağlı)
+            // Burada gerekirse form verilerinin geçerliliğini kontrol edebilirsiniz.
+
+            // Mesajı oluştur
+            var fullMessage = "İsim: " + name + "\nE-posta: " + email + "\nKonu: " + subject + "\nMesaj: " + message;
+
+            // Yeni sayfaya yönlendirme ve mesajı gösterme
+            alert("Mesajınız alınmıştır: \n\n" + fullMessage);
+            setTimeout(function () {
+                window.location.href = "anasayfa.html";
+            }, 3000); // 3 saniye sonra yönlendirme yap
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <div class="navbar">
+            <a href="anasayfa.html">Ana Sayfa</a>
+            <a href="özgeçmiş.html">Özgeçmiş</a>
+            <a href="şehrim.html">Şehrim</a>
+            <a href="ilgialanlarım.html">İlgi Alanlarım</a>
+            <a href="iletişim.html" class="active">İletişim</a>
+            <a href="giriş.php">Giriş</a>
+        </div>
+        <form onsubmit="submitForm(); return false;">
+            <div class="help-text">
+                <h2>Size Nasıl Yardımcı Olabiliriz?</h2>
+            </div>
+            <label for="name">İsim:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">E-posta:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="subject">Konu:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="message">Mesaj:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <input type="submit" value="Gönder">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+{
+  "futbol": {
+    "bilgi": "Futbol, iki takım arasında oynanan bir spor oyunudur.",
+    "ek_bilgi": "Futbol, dünyanın en popüler sporlarından biridir.",
+    "galatasaray": {
+      "bilgi": "Galatasaray, Türkiye'nin en köklü ve başarılı futbol kulüplerinden biridir.",
+      "fotoğraflar": [
+		  
+        "galatasaray.jpg"
+
+      ]
+    }
+  },
+  "basketbol": {
+    "bilgi": "Basketbol, iki takım arasında bir topun potaya atılmasıyla oynanan bir takım sporudur.",
+    "ek_bilgi": "Basketbol, ABD'de özellikle popüler bir spor dalıdır.",
+    "boston_celtics": {
+      "bilgi": "Boston Celtics, NBA'in en başarılı ve köklü takımlarından biridir.",
+      "fotoğraflar": [
+        "celtics.jpg"
+      ]
+    }
+  },
+  "film_dizi": {
+    "interstellar": {
+      "bilgi": "Interstellar, Christopher Nolan tarafından yönetilen ve bilim kurgu türünde bir film.",
+      "fotoğraflar": [
+        "interstellar.jpg"
+      ]
+    },
+    "seven": {
+      "bilgi": "Seven, David Fincher tarafından yönetilen ve suç türünde bir film.",
+      "fotoğraflar": [
+        "seven.jpeg"
+
+      ]
+    },
+    "breaking_bad": {
+      "bilgi": "Breaking Bad, Vince Gilligan tarafından yaratılan ve bir kimya öğretmeninin uyuşturucu üretme sürecine dönüşünü anlatan bir televizyon dizisi.",
+      "fotoğraflar": [
+        "breaking_bad.jpeg"
+      ]
+    },
+    "game_of_thrones": {
+      "bilgi": "Game of Thrones, George R. R. Martin'in epik fantezi roman serisine dayanan bir televizyon dizisi.",
+      "fotoğraflar": [
+        "got1.jpg"
+      ]
+    },
+    "house_of_dragons": {
+      "bilgi": "House of Dragons, Game of Thrones'un yan dizisidir ve Targaryen hanedanının hikayesini anlatır.",
+      "fotoğraflar": [
+        "hod1.jpg"
+
+      ]
+    }
+  },
+  "video_oyunlari": {
+    "elden_ring": {
+      "bilgi": "Elden Ring, FromSoftware tarafından geliştirilen ve aksiyon-rol yapma türünde bir video oyunu.",
+      "fotoğraflar": [
+        "eldenring.jpg"
+      ]
+    },
+
+    "resident_evil_4": {
+      "bilgi": "Resident Evil 4, Capcom tarafından geliştirilen ve hayatta kalma korku türünde bir video oyunu.",
+      "fotoğraflar": [
+        "re4.jpg"
+      ]
+    },
+    "god_of_war_serisi": {
+      "bilgi": "God of War serisi, Sony Santa Monica tarafından geliştirilen ve antik Yunan mitolojisi temalı bir aksiyon-macera video oyun serisi.",
+      "fotoğraflar": [
+        "god.jpg"
+      ]
+    },
+    "baldurs_gate_3": {
+      "bilgi": "Baldur's Gate 3, Larian Studios tarafından geliştirilen ve Dungeons & Dragons evreninde geçen bir rol yapma video oyunu.",
+      "fotoğraflar": [
+        "bg3.jpg"
+      ]
+    }
+  }
+}

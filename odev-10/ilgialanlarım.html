@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İlgi Alanlarım</title>
+<link href="css/anasayfa.css" rel="stylesheet" type="text/css">
+<style>
+.movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.movie-card {
+    width: 300px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 15px;
+}
+
+.movie-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.movie-overview {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.4;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: #666;
+}
+
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #ff0000;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="anasayfa.html">Ana Sayfa</a>
+    <a href="özgeçmiş.html">Özgeçmiş</a>
+    <a href="şehrim.html">Şehrim</a>
+    <a href="ilgialanlarım.html">İlgi Alanlarım</a>
+    <a href="iletişim.html">İletişim</a>
+    <a href="giriş.php">Giriş</a>
+  </div>
+
+  <header class="header">
+    <h4 class="logo">İlgi Alanlarım</h4>
+  </header>
+
+  <section class="giris">
+    <div class="sutun2">
+      <h3>Favori Filmlerim</h3>
+      <div id="movies" class="movie-container">
+        <div class="loading">Filmler yükleniyor...</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const API_KEY = 'eed4012e27867a7a3569116cd5aa818d';
+const API_URL = 'https://api.themoviedb.org/3';
+const CACHE_DURATION = 1000 * 60 * 60; // 1 saat
+
+// Cache kontrolü
+function getCachedMovies() {
+    const cached = localStorage.getItem('movies');
+    if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+            return data;
+        }
+    }
+    return null;
+}
+
+// Cache'e kaydet
+function cacheMovies(movies) {
+    localStorage.setItem('movies', JSON.stringify({
+        data: movies,
+        timestamp: Date.now()
+    }));
+}
+
+// Popüler filmleri getir
+async function getPopularMovies() {
+    try {
+        // Önce cache'i kontrol et
+        const cachedMovies = getCachedMovies();
+        if (cachedMovies) {
+            return cachedMovies;
+        }
+
+        const response = await fetch(`${API_URL}/movie/popular?api_key=${API_KEY}&language=tr-TR`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Verileri cache'e kaydet
+        cacheMovies(data.results);
+        return data.results;
+    } catch (error) {
+        console.error('Filmler yüklenirken hata oluştu:', error);
+        // Cache'deki eski verileri göster
+        const cachedMovies = getCachedMovies();
+        if (cachedMovies) {
+            return cachedMovies;
+        }
+        return [];
+    }
+}
+
+// Film kartı oluştur
+function createMovieCard(movie) {
+    const posterUrl = movie.poster_path 
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        : 'image/no-poster.jpg';
+
+    return `
+        <div class="movie-card">
+            <img src="${posterUrl}" 
+                 alt="${movie.title}" 
+                 class="movie-poster"
+                 loading="lazy"
+                 onerror="this.src='image/no-poster.jpg'">
+            <div class="movie-info">
+                <h3 class="movie-title">${movie.title}</h3>
+                <p class="movie-overview">${movie.overview ? movie.overview.substring(0, 150) + '...' : 'Açıklama bulunmuyor.'}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Filmleri göster
+async function displayMovies() {
+    const moviesContainer = document.getElementById('movies');
+    let retryCount = 0;
+    const maxRetries = 3;
+
+    async function tryLoadMovies() {
+        try {
+            moviesContainer.innerHTML = '<div class="loading">Filmler yükleniyor...</div>';
+            const movies = await getPopularMovies();
+            
+            if (movies.length === 0) {
+                throw new Error('Film verisi bulunamadı');
+            }
+
+            moviesContainer.innerHTML = movies.map(movie => createMovieCard(movie)).join('');
+        } catch (error) {
+            console.error('Hata:', error);
+            if (retryCount < maxRetries) {
+                retryCount++;
+                setTimeout(tryLoadMovies, 1000 * retryCount); // Her denemede bekleme süresini artır
+            } else {
+                moviesContainer.innerHTML = `
+                    <div class="error">
+                        Filmler yüklenirken bir hata oluştu.<br>
+                        Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin.
+                    </div>`;
+            }
+        }
+    }
+
+    await tryLoadMovies();
+}
+
+// Sayfa yüklendiğinde filmleri göster
+document.addEventListener('DOMContentLoaded', displayMovies);
+
+// Sayfa yenilendiğinde cache'i temizle
+window.addEventListener('beforeunload', () => {
+    // Cache'i temizleme işlemi burada yapılabilir
+    // localStorage.removeItem('movies');
+});
+</script>
+
+</body>
+</html>
+
